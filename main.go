@@ -44,16 +44,41 @@ type Book struct {
 	Author string
 }
 
-var library []Book
+var library = make([]Book, 0, 0)
 
 var libMap = make(map[int]Book)
 
-func AddBook(title string, author string) {
-	bookId := len(library) + 1
+func AddBook(bookId int, title string, author string) {
+	if _, exists := libMap[bookId]; exists {
+		fmt.Println(Red + "Error: Book with this ID already exists!" + Reset)
+		return
+	}
 	book := Book{ID: bookId, Title: title, Author: author}
 	library = append(library, book)
 	libMap[bookId] = book
 	fmt.Println(Green + "Book added successfully!" + Reset)
+
+}
+
+func FindBookByID(id int) (*Book, error) {
+	if book, exists := libMap[id]; exists {
+		return &book, nil
+	}
+	return nil, fmt.Errorf("Book with ID %d not found", id)
+}
+
+func DeleteBook(id int) (*Book, error) {
+	if book, exists := libMap[id]; exists {
+		delete(libMap, id)
+		for i, b := range library {
+			if b.ID == id {
+				library = append(library[:i], library[i+1:]...)
+				break
+			}
+		}
+		return &book, nil
+	}
+	return nil, fmt.Errorf("Book with ID %d not found", id)
 
 }
 
@@ -97,6 +122,14 @@ func main() {
 		switch choice {
 		case 1:
 			fmt.Println(Magenta + "You chose Add Book." + Reset)
+			fmt.Printf(Blue + "Enter Book Id: " + Reset)
+			id, _ := reader.ReadString('\n')
+			id = strings.TrimSpace(id)
+			bookId, err := strconv.Atoi(id)
+			if err != nil {
+				fmt.Println(Red + "Error: Invalid Book ID. Please enter a valid number." + Reset)
+				continue
+			}
 			fmt.Printf(Blue + "Enter Book Title: " + Reset)
 			title, _ := reader.ReadString('\n')
 			title = strings.TrimSpace(title)
@@ -110,14 +143,43 @@ func main() {
 				continue
 			}
 
-			AddBook(title, author)
+			AddBook(bookId, title, author)
 
 		case 2:
 			fmt.Println("You chose Delete Book.")
 			// Call your DeleteBook function here
+			fmt.Printf(Blue + "Enter Book Id to delete: " + Reset)
+			id, _ := reader.ReadString(('\n'))
+			id = strings.TrimSpace(id)
+			bookId, err := strconv.Atoi(id)
+			if err != nil {
+				fmt.Println(Red + "Error: Invalid Book ID. Please enter a valid number." + Reset)
+				continue
+			}
+			book, err := DeleteBook(bookId)
+			if err != nil {
+				fmt.Println(Red + err.Error() + Reset)
+			} else {
+				fmt.Println(Green+"Deleted Book Successfully :", "ID:", book.ID, "Title:", book.Title, "Author:", book.Author+Reset)
+
+			}
 		case 3:
 			fmt.Println("You chose Find Book By Id.")
 			// Call your FindBookByID function here
+			fmt.Printf(Blue + "Enter Book Id to find: " + Reset)
+			id, _ := reader.ReadString('\n')
+			id = strings.TrimSpace(id)
+			bookId, err := strconv.Atoi(id)
+			if err != nil {
+				fmt.Println(Red + "Error: Invalid Book ID. Please enter a valid number." + Reset)
+				continue
+			}
+			book, err := FindBookByID(bookId)
+			if err != nil {
+				fmt.Println(Red + err.Error() + Reset)
+			} else {
+				fmt.Println(Green+"Book found:", "ID:", book.ID, "Title:", book.Title, "Author:", book.Author, Reset)
+			}
 		case 4:
 			fmt.Println("You chose View All Books.")
 			// Call your ViewAllBooks function here
