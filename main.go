@@ -44,7 +44,7 @@ type Book struct {
 	Author string
 }
 
-var library = make([]Book, 0, 0)
+var library = []Book{{ID: 1, Title: "The Great Gatsby", Author: "F. Scott Fitzgerald"}}
 
 var libMap = make(map[int]Book)
 
@@ -82,6 +82,16 @@ func DeleteBook(id int) (*Book, error) {
 
 }
 
+func SearchByTitle(title string) []Book {
+	matchingBooks := []Book{}
+	for _, book := range library {
+		if strings.Contains(strings.ToLower(book.Title), strings.ToLower(title)) {
+			matchingBooks = append(matchingBooks, book)
+		}
+	}
+	return matchingBooks
+}
+
 func center(s string, w int) string {
 
 	return fmt.Sprintf("%[1]*s", -w, fmt.Sprintf("%[1]*s", (w+len(s))/2, s))
@@ -106,7 +116,8 @@ func main() {
 		fmt.Println(center(Yellow+"2. Delete Book "+Reset, width))
 		fmt.Println(center(Yellow+"3. Find Book By Id "+Reset, width))
 		fmt.Println(center(Yellow+"4. View All Books "+Reset, width))
-		fmt.Println(center(Yellow+"5. Exit "+Reset, width))
+		fmt.Println(center(Yellow+"5. Search Book By Title "+Reset, width))
+		fmt.Println(center(Yellow+"6. Exit "+Reset, width))
 
 		reader := bufio.NewReader(os.Stdin)
 		input, _ := reader.ReadString('\n')
@@ -187,6 +198,26 @@ func main() {
 				fmt.Println("ID:", book.ID, "Title:", book.Title, "Author:", book.Author)
 			}
 		case 5:
+			fmt.Println("You chose Search Book By Title.")
+			// Call your SearchByTitle function here
+			fmt.Printf(Blue + "Enter Book Title to search: " + Reset)
+			title, _ := reader.ReadString('\n')
+			title = strings.TrimSpace(title)
+			if title == "" {
+				fmt.Println(Red + "Error: Title cannot be empty." + Reset)
+				continue
+			}
+			matchingBooks := SearchByTitle(title)
+			if len(matchingBooks) == 0 {
+				fmt.Println(Red + "No books found matching the title." + Reset)
+			} else {
+				fmt.Println(Green + "Matching Books:" + Reset)
+				for _, book := range matchingBooks {
+					matchInd := strings.Index(strings.ToLower(book.Title), strings.ToLower(title))
+					fmt.Println("ID:", book.ID, "Title:", book.Title[:matchInd]+Yellow+book.Title[matchInd:matchInd+len(title)]+Reset+book.Title[matchInd+len(title):], "Author:", book.Author)
+				}
+			}
+		case 6:
 			fmt.Println(center(Magenta+"Exiting Application. GoodBye!!!"+Reset, width))
 			return // Use return to exit the main function and terminate the program.
 		default:
