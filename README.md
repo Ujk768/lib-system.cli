@@ -22,7 +22,12 @@ It also includes a minimal **console UI** with colors and centered headings.
 
 ✅ **View All Books**  
 - Lists all books currently in the library.  
-- Uses a slice to maintain insertion order.  
+- Uses a slice to maintain insertion order.
+
+✅ **Search Book By Title**  
+-Allows users to search for a book using book title
+- The searched word is highlighted for better readability
+  
 
 ✅ **Colorful Console UI**  
 - Menu and messages styled with ANSI color codes.  
@@ -77,14 +82,37 @@ It also includes a minimal **console UI** with colors and centered headings.
           2. Delete Book
           3. Find Book By Id
           4. View All Books
-          5. Exit
+          5. Search Book By Title
+          6. Exit
 ```
+
+---
+## ScreenShots
+
+- **UI** 
+<img width="1387" height="370" alt="image" src="https://github.com/user-attachments/assets/7fbca335-c79f-488d-aeda-61dd208b2b01" />
+
+- **Add Book**
+<img width="1390" height="661" alt="image" src="https://github.com/user-attachments/assets/afd37704-c9f7-4b79-a88b-d100b226eedc" />
+
+- **Find Book By Id**
+<img width="1363" height="268" alt="image" src="https://github.com/user-attachments/assets/42652fda-d7b5-40fb-8cf8-ac73397c1a48" />
+
+- **View All Books**
+<img width="1386" height="296" alt="image" src="https://github.com/user-attachments/assets/f83047be-7c3a-4bb1-a3ab-94ba0b25758b" />
+
+- **Search Book By Title**
+<img width="1396" height="296" alt="image" src="https://github.com/user-attachments/assets/9292b3ed-7399-41b0-a052-3d07b999bac8" />
+
+
+
+
+
 
 ---
 
 ## 🚀 Next Planned Features
 
-- [ ] **Search by Title / Author**  
 - [ ] **Update Book Details**  
 - [ ] **Persistent Storage (save to JSON or DB)**  
 - [ ] **Export Books to File (CSV/JSON)**  
