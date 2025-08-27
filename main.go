@@ -106,6 +106,7 @@ func main() {
 	}
 
 	width := int(winSize.Width)
+	libMap[1] = Book{ID: 1, Title: "The Great Gatsby", Author: "F. Scott Fitzgerald"}
 
 	fmt.Println(center(Cyan+"Library Management System"+Reset, width))
 
